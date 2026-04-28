@@ -1,10 +1,11 @@
 import sys
-sys.path.append(".")
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent / "src"))
 import streamlit as st
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-from src.pbpe_engine import PBPEEngine
+from pbpe_engine import PBPEEngine
 
 st.set_page_config(page_title="PBPE Finance | BioNexus Platform", layout="wide")
 
@@ -90,12 +91,21 @@ with tab3:
     st.markdown(f"| Custom | {coffee_tons:,} tons | ${scope3_value:,.0f} | — |")
 
     st.subheader("Capital Multiplier Effect")
+    
     layers = engine.capital_multiplier(1_000_000)
+
     fig4 = go.Figure(data=[go.Sankey(
-        node=dict(label=list(layers.keys()), pad=15, thickness=20),
-        link=dict(source=[0, 1, 2], target=[1, 2, 3],
-                  value=[layers["AGRIX"], layers["SafelyChain"], layers["MABC"]])
-    )])
+    node=dict(label=list(layers.keys()), pad=15, thickness=20),
+    link=dict(
+        source=[0, 1, 2],
+        target=[1, 2, 3],
+        value=[
+            layers["AGRIX"] - layers["MBT55"],          # 増分
+            layers["SafelyChain"] - layers["AGRIX"],    # 増分
+            layers["MABC"] - layers["SafelyChain"]      # 増分
+        ]
+    )
+)])
     fig4.update_layout(title="Capital Flow: $1 → $94.10 Total Economic Value")
     st.plotly_chart(fig4, use_container_width=True)
 
