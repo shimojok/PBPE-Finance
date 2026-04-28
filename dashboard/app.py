@@ -85,10 +85,16 @@ with tab3:
     scope3_value = engine.scope3_value(coffee_tons)
     st.metric("Annual Scope 3 Reduction Value", f"${scope3_value:,.0f}")
 
-    st.markdown("| Company | Annual Procurement | Scope 3 Value | ESG Market Cap Impact |")
-    st.markdown("|---|---|---|---|")
-    st.markdown(f"| Starbucks | 400,000 tons | ${engine.scope3_value(400000):,.0f} | +${engine.esg_market_cap_impact(100_000_000_000):,.0f} |")
-    st.markdown(f"| Custom | {coffee_tons:,} tons | ${scope3_value:,.0f} | — |")
+    starbucks_scope3 = engine.scope3_value(400000)
+    starbucks_esg = engine.esg_market_cap_impact(100_000_000_000)
+    
+    comparison = pd.DataFrame({
+        "Company": ["Starbucks", "Custom"],
+        "Annual Procurement (tons)": ["400,000", f"{coffee_tons:,}"],
+        "Scope 3 Value (USD)": [f"${starbucks_scope3:,.0f}", f"${scope3_value:,.0f}"],
+        "ESG Market Cap Impact (USD)": [f"+${starbucks_esg:,.0f}", "—"]
+    })
+    st.table(comparison)
 
     st.subheader("Capital Multiplier Effect")
     
@@ -121,10 +127,10 @@ with tab4:
 
     df_mroi = pd.DataFrame({
         "Disease": ["Diabetes", "Hypertension", "Colon Cancer"],
-        "Avoided Cost (¥)": [f"¥{m_diab:,.0f}", f"¥{m_hyper:,.0f}", f"¥{m_cancer:,.0f}"]
+        "Avoided Cost (USD)": [f"${m_diab:,.0f}", f"${m_hyper:,.0f}", f"${m_cancer:,.0f}"]
     })
     st.table(df_mroi)
-    st.metric("Total m-ROI (per person/year)", f"¥{m_total:,.0f}")
+    st.metric("Total m-ROI (per person/year)", f"${m_total:,.0f}")
 
     st.subheader("Carbon Micro-Transaction Simulator")
     co2_per_purchase = st.slider("CO₂ Reduced per Purchase (kg)", 0.1, 5.0, 1.0)
