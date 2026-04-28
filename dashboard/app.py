@@ -47,7 +47,8 @@ with tab1:
     st.plotly_chart(fig, use_container_width=True)
 
     st.subheader("Food Price Simulation (10-Year)")
-    prices = engine.simulate_food_price(10)
+# 食料価格シミュレーション
+    prices = engine.simulate_food_price(years=10)   # 引数名を明示
     fig2 = go.Figure()
     fig2.add_trace(go.Scatter(y=prices, mode='lines+markers', name='Price'))
     fig2.update_layout(title="Projected Food Price Decline (Supply Increase Effect)")
