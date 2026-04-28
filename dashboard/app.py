@@ -48,8 +48,7 @@ with tab1:
 
     st.subheader("Food Price Simulation (10-Year)")
 # 食料価格シミュレーション
-   # prices = engine.simulate_food_price(years=10)   # 引数名を明示
-    prices = [3000] * 10  # 仮の値
+    prices = engine.simulate_food_price(years=10)   # 引数名を明示
     fig2 = go.Figure()
     fig2.add_trace(go.Scatter(y=prices, mode='lines+markers', name='Price'))
     fig2.update_layout(title="Projected Food Price Decline (Supply Increase Effect)")
